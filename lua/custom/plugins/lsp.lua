@@ -61,6 +61,8 @@ return {
           --  To jump back, press <C-t>.
           map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
 
+          map('grs', vim.lsp.buf.signature_help, 'Get Signature Help')
+
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
           map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -179,7 +181,7 @@ return {
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        basedpyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
