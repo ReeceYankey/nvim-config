@@ -8,5 +8,12 @@ return {
       -- Only one of these is needed.
       'nvim-telescope/telescope.nvim', -- optional
     },
+    keys = { {
+      '<leader>g',
+      function()
+        require('neogit').open()
+      end,
+      desc = 'Neogit',
+    } },
   },
 }
