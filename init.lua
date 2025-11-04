@@ -44,7 +44,22 @@ vim.opt.showmode = false
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
+  if vim.fn.has 'wsl' == 1 then
+    vim.g.clipboard = {
+      name = 'WslClipboard',
+      copy = {
+        ['+'] = 'clip.exe',
+        ['*'] = 'clip.exe',
+      },
+      paste = {
+        ['+'] = 'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        ['*'] = 'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+      },
+      cache_enabled = 0,
+    }
+  else
+    vim.opt.clipboard = 'unnamedplus'
+  end
 end)
 
 -- Enable break indent
@@ -101,7 +116,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', 'gro', vim.diagnostic.open_float, { desc = 'Open diagnostic popup' })
 vim.keymap.set('n', '<leader>td', function()
-    vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+  vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end, { desc = 'Toggle diagnostics' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
@@ -134,7 +149,6 @@ vim.opt_global.shortmess:remove 'F'
 -- metals command palette
 -- vim.keymap.set('n', '<leader>mc', require('telescope').extensions.metals.commands)
 vim.keymap.set('n', '<leader>mc', "<cmd>lua require('telescope').extensions.metals.commands()<cr>")
-
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
